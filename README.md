@@ -30,6 +30,14 @@ To install the Python requirements, open your terminal and enter:
 pip install -r requirements.txt
 ```
 
+## Data
+
+A dataset of the GOV.UK website structural network adjacency list (how pages
+link to each other) is included in the file
+`data/raw/structural_network_adjacency_list_20190301.csv`.  It was originally
+obtained from
+[GOV.UK](https://data.gov.uk/dataset/00f43927-0c93-4f9e-9632-b082fdbb0299/gov-uk-structural-network-adjacency-list).
+
 ## Licence
 
 Unless stated otherwise, the codebase is released under the MIT License. This covers
