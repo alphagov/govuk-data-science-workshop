@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# A script that Binder will run before the user session starts.
+# See https://mybinder.readthedocs.io/en/latest/config_files.html
+
+# Load environment variables
+source .envrc
