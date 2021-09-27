@@ -5,3 +5,6 @@
 
 # Load environment variables
 source .envrc
+
+# This must be the final line:
+exec "$@"
