@@ -3,7 +3,7 @@
 Materials for a workshop about data science and GOV.UK.  To run the notebook in
 your browser, click the button below that is labelled "launch binder".
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alphagov/govuk-data-science-workshop/HEAD?filepath=notebooks%2F2021_09_intro_to_Google_Colab_and_using_gov_uk_search_programmatically.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alphagov/govuk-data-science-workshop/HEAD?filepath=notebooks%2F2021_09_explore_govuk_structural_network.ipynb)
 ```{warning}
 Where this documentation refers to the root folder we mean where this README.md is
 located.
