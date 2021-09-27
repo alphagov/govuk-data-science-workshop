@@ -8,3 +8,5 @@ toml
 notebook
 pandas
 requests
+python-igraph
+pandas
