@@ -3,3 +3,7 @@ channels:
 dependencies:
   - r-base=4.1
   - r-tidyverse
+  - r-ggraph
+  - r-igraph
+  - r-ggiraph
+  - r-here
