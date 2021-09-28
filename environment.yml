@@ -2,7 +2,9 @@ channels:
   - conda-forge
 dependencies:
   - r-base=4.1
-  - r-tidyverse
+  - r-readr
+  - r-dplyr
+  - r-stringr
   - r-ggraph
   - r-igraph
   - r-ggiraph
