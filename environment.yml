@@ -12,6 +12,7 @@ dependencies:
   - python=3.9.7
   - numpy
   - pip
+  - pycairo
   - pip:
     - coverage
     - detect-secrets==1.0.3
@@ -26,4 +27,3 @@ dependencies:
     - matplotlib == 3.4.3
     - bokeh
     - networkx
-    - pycairo
