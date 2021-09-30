@@ -24,15 +24,15 @@ edges = pd.read_csv(
 )
 edges.drop_duplicates(inplace=True)
 
-# Filter for pages whose URLs contain the word 'childcare'
+# Filter for pages whose URLs contain a substring
 search_string = "childcare"
-childcare_edges = edges[
+edges = edges[
     (edges.source_base_path.str.contains(search_string))
     | (edges.sink_base_path.str.contains(search_string))
 ]
 
 # Construct a graph object from the edges
-g = Graph.DataFrame(childcare_edges, directed=True)
+g = Graph.DataFrame(edges, directed=True)
 
 # The graph has one big component, and many small ones
 # that are disconnected from the big one.
