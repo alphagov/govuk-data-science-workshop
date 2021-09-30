@@ -27,3 +27,5 @@ dependencies:
     - matplotlib == 3.4.3
     - bokeh
     - networkx
+    - plotly
+    - chart-studio
