@@ -28,19 +28,22 @@ edges.drop_duplicates(inplace=True)
 
 
 def filter_edges(edges, search_term):
-    """Filter edges for pages whose URLs contain a substring"""
+    """
+    Filter edges for pages whose URLs contain a substring.
+    Keep only the first 1000 edges.
+    """
 
     return edges[
         (edges.source_base_path.str.contains(search_term))
         | (edges.sink_base_path.str.contains(search_term))
-    ]
+    ].head(1000)
 
 
 def community_graph(edges, search_term, display_centrality, community_algorithm):
     """
     Show a graph coloured by community, and filtered by a search term
 
-    Available algorithsm:
+    Available algorithms:
 
     1. infomap
     2. spinglass
