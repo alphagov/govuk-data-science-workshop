@@ -146,6 +146,15 @@ def community_graph(
         hoverinfo="text",
     )
 
+    #   # Use arrows instead of lines, to show edge direction.
+    #   # Add annotation=annotation to the viz_layout = Layout() call.
+    #   # Not clear enough yet.
+    #     annotations = [
+    #         dict(ax=layt[e[1]][0], ay=layt[e[1]][1], axref='x', ayref='y',
+    #             x=layt[e[0]][0], y=layt[e[0]][1], xref='x', yref='y',
+    #             showarrow=True, arrowhead=1,) for e in E
+    #     ]
+
     # Plot the node degrees
     if display_centrality:
         trace3 = Scatter(
