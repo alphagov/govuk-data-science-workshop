@@ -215,6 +215,38 @@ def community_graph(
     return fig
 
 
+def top_nodes(edges, search_term, centrality_algorithm, number_of_results=10):
+    """
+    Filter for the top 10 nodes by centrality, matching a search term
+    """
+
+    # Filter for pages whose URLs contain a substring
+    filtered_edges = filter_edges(edges, search_term)
+
+    # Construct a graph object from the edges
+    g = Graph.DataFrame(filtered_edges, directed=True)
+
+    # Keep only the largest component.
+    components = g.clusters(mode="weak")
+    G = components.giant()
+
+    # Extract URLs
+    labels = list(G.vs["name"])
+
+    # Calculate the degree of each node (each page).  The
+    # degree is the number of edges into and out of the
+    # node.
+    #     degrees = [v.degree(mode="out") for v in VertexSeq(G)]
+    #     degrees = [v.pagerank() for v in VertexSeq(G)]
+    c = [getattr(v, centrality_algorithm)() for v in VertexSeq(G)]
+
+    d = {"centrality": c, "url": labels}
+    df = pd.DataFrame(data=d)
+    df.sort_values(by=["centrality"], ascending=False, inplace=True)
+
+    return df.head(number_of_results)
+
+
 # User input widgets
 search_term = widgets.Text(
     value="childcare",
