@@ -154,6 +154,7 @@ def community_graph(
             mode="text",
             text=degrees,
             hoverinfo="none",
+            textfont_color="rgb(255,255,255)",
         )
     else:
         trace3 = None
