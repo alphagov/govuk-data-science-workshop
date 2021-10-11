@@ -189,19 +189,6 @@ def community_graph(
             t=100,
         ),
         hovermode="closest",
-        annotations=[
-            dict(
-                showarrow=False,
-                text="",
-                xref="paper",
-                yref="paper",
-                x=0,
-                y=-0.1,
-                xanchor="left",
-                yanchor="bottom",
-                font=dict(size=14),
-            )
-        ],
     )
 
     # Combine the traces
