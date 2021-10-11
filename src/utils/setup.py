@@ -5,6 +5,7 @@
 
 # Load packages
 import os
+import random
 import pandas as pd
 from igraph import Graph, VertexSeq
 from igraph.drawing.colors import ClusterColoringPalette, color_to_html_format
@@ -39,7 +40,9 @@ def filter_edges(edges, search_term):
     ].head(1000)
 
 
-def community_graph(edges, search_term, display_centrality, community_algorithm):
+def community_graph(
+    edges, search_term, display_centrality, community_algorithm, community_filter
+):
     """
     Show a graph coloured by community, and filtered by a search term
 
@@ -61,6 +64,26 @@ def community_graph(edges, search_term, display_centrality, community_algorithm)
     components = g.clusters(mode="weak")
     G = components.giant()
 
+    # Detect communities within the graph.  The spinglass
+    # algorithm allows for a maximum number of communities
+    # to be set.  It might detect fewer than this, but it
+    # won't detect more.  Every node (every page) will be
+    # assigned to exactly one community.
+    # https://stackoverflow.com/a/15146914/937932
+    random.seed(2021 - 10 - 11)
+    community_method = getattr(G, "community_" + community_algorithm)
+    communities = community_method()
+    #     communities = G.community_spinglass(spins=5)
+
+    # Keep the nodes of a particular community
+    if community_filter >= 0:
+        to_delete_ids = [
+            index
+            for index, community in enumerate(communities.membership)
+            if community != community_filter
+        ]
+        G.delete_vertices(to_delete_ids)
+
     # Extract bits for the viz
     labels = list(G.vs["name"])
     N = len(labels)
@@ -70,16 +93,6 @@ def community_graph(edges, search_term, display_centrality, community_algorithm)
     # degree is the number of edges into and out of the
     # node.
     degrees = [v.degree(mode="out") for v in VertexSeq(G)]
-
-    # Detect communities within the graph.  The spinglass
-    # algorithm allows for a maximum number of communities
-    # to be set.  It might detect fewer than this, but it
-    # won't detect more.  Every node (every page) will be
-    # assigned to exactly one community.
-    # https://stackoverflow.com/a/15146914/937932
-    community_method = getattr(G, "community_" + community_algorithm)
-    communities = community_method()
-    #     communities = G.community_spinglass(spins=5)
 
     # Extract bits for the viz
     labels = list(G.vs["name"])
@@ -91,10 +104,13 @@ def community_graph(edges, search_term, display_centrality, community_algorithm)
     layt = G.layout("fr")  # fruchterman-reingold
 
     # Assign colours to communities
-    pal = ClusterColoringPalette(len(communities))
-    G.vs["color"] = pal.get_many(communities.membership)
-    colours = list(G.vs["color"])
-    hexes = [color_to_html_format(rgba)[:7] for rgba in colours]
+    if community_filter >= 0:
+        hexes = None
+    else:
+        pal = ClusterColoringPalette(len(communities))
+        G.vs["color"] = pal.get_many(communities.membership)
+        colours = list(G.vs["color"])
+        hexes = [color_to_html_format(rgba)[:7] for rgba in colours]
 
     Xn = [layt[k][0] for k in range(N)]
     Yn = [layt[k][1] for k in range(N)]
@@ -221,6 +237,15 @@ algorithm = widgets.RadioButtons(
     layout={"width": "max-content"},
 )
 
+community_filter = widgets.IntText(
+    value=-1,
+    description="Filter for a single community (-1 to keep all communities):",
+    disabled=False,
+    style={"description_width": "initial"},
+    layout={"width": "max-content"},
+)
+
 display(search_term)
 display(display_centrality)
 display(algorithm)
+display(community_filter)
