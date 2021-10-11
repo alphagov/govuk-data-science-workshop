@@ -126,7 +126,7 @@ def community_graph(
         x=Xe,
         y=Ye,
         mode="lines",
-        line=dict(color="rgb(210,210,210)", width=1),
+        line=dict(color="rgb(110,110,110)", width=1),
         hoverinfo="none",
     )
 
