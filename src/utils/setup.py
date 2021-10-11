@@ -17,6 +17,9 @@ from IPython.display import display
 # Set notebook mode to work in offline
 pyo.init_notebook_mode()
 
+# Show data frames with greater width for URLs
+pd.set_option("display.max_colwidth", 100)
+
 # Read the name of the edgelist dataset file from an environment variable.
 DIR_DATA_RAW = os.getenv("DIR_DATA_RAW")
 
