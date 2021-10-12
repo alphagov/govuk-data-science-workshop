@@ -4,6 +4,8 @@
 # https://plotly.com/python/v3/igraph-networkx-comparison/
 
 # Load packages
+
+# For network analysis
 import os
 import random
 import pandas as pd
@@ -13,6 +15,10 @@ from plotly.graph_objs import Figure, Scatter, Layout, layout
 import plotly.offline as pyo
 import ipywidgets as widgets
 from IPython.display import display
+
+# For the GOV.UK Search API
+import json
+import requests
 
 # Set notebook mode to work in offline
 pyo.init_notebook_mode()
@@ -276,6 +282,45 @@ community_filter = widgets.IntText(
     style={"description_width": "initial"},
     layout={"width": "max-content"},
 )
+
+
+# Query the GOV.UK Search API
+class ApiError(Exception):
+    """An API Error Exception"""
+
+    def __init__(self, status):
+        self.status = status
+
+    def __str__(self):
+        return "ApiError: status={}".format(self.status)
+
+
+def govuk_search(search_term, number_of_results=10):
+    """Query the GOV.UK search API
+
+    :Usage::
+        >>> df = govuk_search(search_term = 'tax', number_of_results = 5)
+
+    :param search_term: Query str to search for.
+    :param number_of_results: int
+    """
+    resp = requests.get(
+        url="https://www.gov.uk/api/search.json?q="
+        + search_term
+        + "&count="
+        + str(number_of_results)
+        + "&fields=content_id"
+    )
+    if resp.status_code != 200:
+        raise ApiError("GET /tasks/ {}".format(resp.status_code))
+
+    data = json.loads(resp.content.decode("utf-8"))
+
+    df = pd.DataFrame.from_records(data["results"], columns=["_id", "combined_score"])
+    df = pd.DataFrame({"score": df.combined_score, "url": df._id})
+
+    return df
+
 
 display(search_term)
 display(display_centrality)
